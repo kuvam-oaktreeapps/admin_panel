@@ -54,8 +54,27 @@ const XXXXX = () => {
     },
   });
 
-  const { deleteData } = fetcher.useDELETE({
-    onSuccess: () => refetchEntities(),
+  const { deleteData } = fetcher.useDELETE<ServerResponse<any>>({
+    onSuccess: async ({ message }) => {
+      toast.current?.show({
+        severity: "success",
+        summary: "Successful",
+        detail: message,
+        life: 3000,
+      });
+
+      refetchEntities();
+    },
+    onError: async ({ fetchResponse }) => {
+      const error = (await fetchResponse.json()) as ServerResponse<any>;
+
+      toast.current?.show({
+        severity: "error",
+        summary: "Error occured",
+        detail: error.message,
+        life: 3000,
+      });
+    }
   });
 
   const hideDeleteEntityDialog = () => {
@@ -109,7 +128,6 @@ const XXXXX = () => {
 
     reader.readAsText(csvFile);
 
-    // setEntities(_xxxxx);
     toast.current?.show({
       severity: "success",
       summary: "Successful",

@@ -99,6 +99,7 @@ const LoginPage: Page = () => {
                 toggleMask
                 className={"w-full mb-5 " + (errors.password ? "p-invalid" : "")}
                 inputClassName="w-full p-3 md:w-30rem"
+                feedback={false}
               ></Password>
             </div>
             <Button

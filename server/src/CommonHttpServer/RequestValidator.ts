@@ -15,17 +15,17 @@ const validateUsingClassValidator = async (dto: any, input: any) => {
   const isFailed = validationErrors.length > 0;
 
   return { obj, isFailed, validationErrors };
-}
+};
 
 const validateUsingZodSchema = (dto: ZodSchema, input: any) => {
-  const parseRes = dto.safeParse(input)
+  const parseRes = dto.safeParse(input);
 
   if (parseRes.success) {
-    return { obj: parseRes.data, isFailed: false, validationErrors: [] }
+    return { obj: parseRes.data, isFailed: false, validationErrors: [] };
   }
 
-  return { obj: {}, isFailed: true, validationErrors: parseRes.error.issues }
-}
+  return { obj: {}, isFailed: true, validationErrors: parseRes.error.issues };
+};
 
 /**
  *
@@ -39,11 +39,7 @@ export const validateDtoMiddleware = function (
   propertyToValidate: "body" | "query" | "params",
   using: "class-validator" | "zod" = "class-validator"
 ) {
-  return async (
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction
-  ) => {
+  return async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     let input: any = {};
     switch (propertyToValidate) {
       case "body":
@@ -57,22 +53,22 @@ export const validateDtoMiddleware = function (
         break;
     }
 
-    let isFailed = false
-    let obj: any = {}
-    let validationErrors: any = []
+    let isFailed = false;
+    let obj: any = {};
+    let validationErrors: any = [];
 
     if (using === "class-validator") {
-      const response = await validateUsingClassValidator(dto, input)
-      
-      obj = response.obj
-      isFailed = response.isFailed
-      validationErrors = response.validationErrors
-    } else {
-      const response = validateUsingZodSchema(dto, input)
+      const response = await validateUsingClassValidator(dto, input);
 
-      obj = response.obj
-      isFailed = response.isFailed
-      validationErrors = response.validationErrors
+      obj = response.obj;
+      isFailed = response.isFailed;
+      validationErrors = response.validationErrors;
+    } else {
+      const response = validateUsingZodSchema(dto, input);
+
+      obj = response.obj;
+      isFailed = response.isFailed;
+      validationErrors = response.validationErrors;
     }
 
     Logger.info({ message: "Request Input", data: { obj }, tag });

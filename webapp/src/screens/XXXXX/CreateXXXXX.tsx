@@ -14,6 +14,7 @@ import { FileUpload } from "primereact/fileupload";
 import { fetcher } from "@/usefetcher";
 import { ServerResponse } from "@/types/types";
 import { Link } from "react-router-dom";
+import { BASE_URL } from "@/constants";
 
 function CreateXXXXX() {
   const initialState: XXXXXType = {
@@ -24,6 +25,8 @@ function CreateXXXXX() {
 
   const [entity, setEntity] = useState(initialState);
   const [submitted, setSubmitted] = useState(false);
+
+  const [files, setFiles] = useState<Map<string, File>>(new Map());
 
   const { postData: postEntity } = fetcher.usePOST<ServerResponse<any>>("/xxxxx/create", {
     onSuccess: () => {
@@ -48,6 +51,43 @@ function CreateXXXXX() {
 
   const saveEntity = async () => {
     setSubmitted(true);
+
+    const fileList = Array.from(files).map(([, value]) => ({ fileName: value.name }));
+
+    const res = await fetch(`${BASE_URL}/s3/signedUrl`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+      },
+      body: JSON.stringify({
+        fileList,
+      }),
+    });
+
+    const {
+      data: { uploadList },
+    } = (await res.json()) as ServerResponse<any>;
+
+    uploadList.map(async ({ fileUrl }, index) => {
+      const file = Array.from(files)[index][1];
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch(fileUrl, {
+        method: "PUT",
+        body: formData,
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Accept: "application/json",
+        },
+      });
+
+      console.log(res.status);
+      const data = (await res.json()) as ServerResponse<any>;
+      console.log(data);
+    });
 
     /*VALIDATE_FIELDS*/ await postEntity(entity);
   };
@@ -84,7 +124,20 @@ function CreateXXXXX() {
             </div>
 
             <div className="p-card-content">
-              <div className="flex flex-wrap align-items-end gap-3">{/*INPUT_FIELDS*/}</div>
+              <div className="flex flex-wrap align-items-end gap-3">
+                {/*INPUT_FIELDS*/}
+
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const newFiles = new Map(files);
+                    newFiles.set("profile", e.target?.files?.[0] as File);
+
+                    setFiles(newFiles);
+                  }}
+                />
+              </div>
             </div>
 
             <div className="p-card-footer">

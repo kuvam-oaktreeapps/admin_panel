@@ -15,6 +15,7 @@ import { fetcher } from "@/usefetcher";
 import { ServerResponse } from "@/types/types";
 import { Link } from "react-router-dom";
 import { BASE_URL } from "@/constants";
+import { getBase64Url } from "@/utils/images";
 
 function CreateXXXXX() {
   const initialState: XXXXXType = {
@@ -52,41 +53,19 @@ function CreateXXXXX() {
   const saveEntity = async () => {
     setSubmitted(true);
 
-    const fileList = Array.from(files).map(([, value]) => ({ fileName: value.name }));
+    const file = Array.from(files)[0][1];
+    const base64Url = await getBase64Url(file);
 
-    const res = await fetch(`${BASE_URL}/s3/signedUrl`, {
+    const res = await fetch(`${BASE_URL}/s3/upload`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
       },
       body: JSON.stringify({
-        fileList,
+        fileString: base64Url,
+        folderName: "images",
       }),
-    });
-
-    const {
-      data: { uploadList },
-    } = (await res.json()) as ServerResponse<any>;
-
-    uploadList.map(async ({ fileUrl }, index) => {
-      const file = Array.from(files)[index][1];
-
-      const formData = new FormData();
-      formData.append("file", file);
-
-      const res = await fetch(fileUrl, {
-        method: "PUT",
-        body: formData,
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Accept: "application/json",
-        },
-      });
-
-      console.log(res.status);
-      const data = (await res.json()) as ServerResponse<any>;
-      console.log(data);
     });
 
     /*VALIDATE_FIELDS*/ await postEntity(entity);

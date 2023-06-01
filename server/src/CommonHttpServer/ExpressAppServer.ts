@@ -1,4 +1,5 @@
 import express from "express";
+import bodyParser from "body-parser";
 import * as http from "http";
 import { Logger } from "../Utils/Logger";
 import cors from "cors";
@@ -19,6 +20,8 @@ export class ExpressAppServer {
     this.tag = `ExpressAppServer:${appName}:${port}`;
     this.pendingApiRequests = 0;
     this.app = express();
+    this.app.use(bodyParser.json({ limit: "50mb" }));
+    this.app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
   }
 
   /**
@@ -67,11 +70,7 @@ export class ExpressAppServer {
               })
             );
 
-            const morganMessageFormatter: morgan.FormatFn = function (
-              tokens,
-              req,
-              res
-            ) {
+            const morganMessageFormatter: morgan.FormatFn = function (tokens, req, res) {
               const logMessage = {
                 method: tokens.method(req, res),
                 url: tokens.url(req, res),

@@ -1,6 +1,6 @@
 import { Ripple } from "primereact/ripple";
 import { classNames } from "primereact/utils";
-import React, { useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import { CSSTransition } from "react-transition-group";
 import { MenuContext } from "./context/menucontext";
 import { AppMenuItemProps } from "../types/types";
@@ -91,7 +91,7 @@ const AppMenuitem = (props: AppMenuItemProps) => {
       ) : null}
 
       {item!.to && !item!.items && item!.visible !== false ? (
-        <a
+        <Link
           href={item!.to}
           target={item!.target}
           onClick={(e) => itemClick(e)}
@@ -102,7 +102,7 @@ const AppMenuitem = (props: AppMenuItemProps) => {
           <span className="layout-menuitem-text">{item!.label}</span>
           {item!.items && <i className="pi pi-fw pi-angle-down layout-submenu-toggler"></i>}
           <Ripple />
-        </a>
+        </Link>
       ) : null}
 
       {subMenu}

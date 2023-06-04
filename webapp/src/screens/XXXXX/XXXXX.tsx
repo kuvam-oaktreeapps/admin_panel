@@ -29,7 +29,7 @@ const XXXXX = () => {
   const dt = useRef<DataTable<XXXXXType[]>>(null);
 
   const { data: entities, refetchData: refetchEntities } =
-    fetcher.useGET<ServerResponse<XXXXXType[]>>("/xxxxx");
+      fetcher.useGET<ServerResponse<XXXXXType[]>>("/xxxxx");
 
   const { postData: deleteEntities } = fetcher.usePOST<ServerResponse<any>>("/xxxxx/delete", {
     onSuccess: async ({ message }) => {
@@ -143,147 +143,144 @@ const XXXXX = () => {
 
   const imageBodyTemplate = (rowData: XXXXXType, fieldName: string) => {
     return (
-      <>
-        <img src={rowData[fieldName]} className="shadow-2" width="100" alt={fieldName} />
-      </>
+        <>
+          <img src={rowData[fieldName]} className="shadow-2" width="100" alt={fieldName} />
+        </>
     );
   };
 
   const actionBodyTemplate = (rowData: XXXXXType) => {
     return (
-      <>
-        <Button
-          icon="pi pi-pencil"
-          rounded
-          severity="success"
-          className="mr-2"
-          onClick={() => navigate("/xxxxx/edit/" + rowData.id)}
-        />
-        <Button icon="pi pi-trash" rounded severity="warning" onClick={() => confirmDelete(rowData)} />
-      </>
+        <>
+          <Button
+              icon="pi pi-pencil"
+              rounded
+              severity="success"
+              className="mr-2"
+              onClick={() => navigate("/xxxxx/edit/" + rowData.id)}
+          />
+          <Button icon="pi pi-trash" rounded severity="warning" onClick={() => confirmDelete(rowData)} />
+        </>
     );
   };
   // ------- Column Body Templates --------
 
   const header = (
-    <div className="flex justify-content-between">
-      <div>
-        <span className="p-input-icon-left mr-2">
+      <div className="flex justify-content-between">
+        <div>
+          <Button
+              label="Delete Selected"
+              icon="pi pi-trash"
+              severity="danger"
+              onClick={confirmDeleteSelected}
+              disabled={!selectedEntities || !selectedEntities.length}
+          />
+          <Button label="Export" icon="pi pi-upload" severity="secondary" onClick={exportCSV} className="ml-2 opacity-70"/>
+          <Button
+              label="Import CSV"
+              icon="pi pi-file-import"
+              severity="secondary"
+              className="ml-2 opacity-70"
+              onClick={() => importCsvInputRef.current?.click()}
+          />
+          <input ref={importCsvInputRef} onChange={onFileImport} className="hidden" type="file" accept=".csv" />
+        </div>
+        <div>
+       <span className="p-input-icon-left mr-2">
           <i className="pi pi-search" />
           <InputText
-            type="search"
-            onInput={(e) => setGlobalFilter(e.currentTarget.value)}
-            placeholder="Search..."
+              type="search"
+              onInput={(e) => setGlobalFilter(e.currentTarget.value)}
+              placeholder="Search..."
           />
         </span>
-        <Button
-          label="Delete Selected"
-          icon="pi pi-trash"
-          severity="danger"
-          onClick={confirmDeleteSelected}
-          disabled={!selectedEntities || !selectedEntities.length}
-        />
+          <Button
+              label="Add New"
+              icon="pi pi-plus"
+              onClick={() => navigate("/xxxxx/create")}
+          />
+        </div>
       </div>
-      <div>
-        <Button
-          label="Import CSV"
-          icon="pi pi-plus"
-          severity="info"
-          className="mr-3"
-          onClick={() => importCsvInputRef.current?.click()}
-        />
-        <input ref={importCsvInputRef} onChange={onFileImport} className="hidden" type="file" accept=".csv" />
-
-        <Button label="Export" icon="pi pi-upload" severity="help" onClick={exportCSV} />
-        <Button
-          label="New"
-          icon="pi pi-plus"
-          severity="success"
-          className=" mr-2"
-          onClick={() => navigate("/xxxxx/create")}
-        />
-      </div>
-    </div>
   );
 
   const deleteEntityDialogFooter = (
-    <>
-      <Button label="No" icon="pi pi-times" text onClick={hideDeleteEntityDialog} />
-      <Button label="Yes" icon="pi pi-check" text onClick={deleteEntity} />
-    </>
+      <>
+        <Button label="No" icon="pi pi-times" text onClick={hideDeleteEntityDialog} />
+        <Button label="Yes" icon="pi pi-check" text onClick={deleteEntity} />
+      </>
   );
   const deleteEntitiesDialogFooter = (
-    <>
-      <Button label="No" icon="pi pi-times" text onClick={hideDeleteEntitiesDialog} />
-      <Button label="Yes" icon="pi pi-check" text onClick={deleteSelected} />
-    </>
+      <>
+        <Button label="No" icon="pi pi-times" text onClick={hideDeleteEntitiesDialog} />
+        <Button label="Yes" icon="pi pi-check" text onClick={deleteSelected} />
+      </>
   );
 
   return (
-    <div className="grid crud-demo">
-      <div className="col-12">
-        <div className="card">
-          <Toast ref={toast} />
-          <h4>Manage xxxxx</h4>
-          <DataTable
-            ref={dt}
-            value={entities?.data || []}
-            selection={selectedEntities}
-            onSelectionChange={(e) => setSelectedEntities(e.value as XXXXXType[])}
-            dataKey="id"
-            paginator
-            rows={10}
-            rowsPerPageOptions={[5, 10, 25]}
-            className="datatable-responsive"
-            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} xxxxx"
-            globalFilter={globalFilter}
-            emptyMessage="No xxxxx found."
-            header={header}
-            responsiveLayout="scroll"
-          >
-            <Column selectionMode="multiple" headerStyle={{ width: "4rem" }}></Column>
-            <Column header="Action" body={actionBodyTemplate} headerStyle={{ minWidth: "10rem" }}></Column>
-            {/*TABLE_COLUMNS*/}
-          </DataTable>
+      <div className="grid crud-demo">
+        <div className="col-12">
+          <div className="card">
+            <Toast ref={toast} />
+            <h4>Manage xxxxx</h4>
+            <DataTable
+                ref={dt}
+                value={entities?.data || []}
+                selection={selectedEntities}
+                onSelectionChange={(e) => setSelectedEntities(e.value as XXXXXType[])}
+                dataKey="id"
+                paginator
+                rows={10}
+                rowsPerPageOptions={[5, 10, 25]}
+                className="datatable-responsive"
+                paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} xxxxx"
+                globalFilter={globalFilter}
+                emptyMessage="No xxxxx found."
+                header={header}
+                responsiveLayout="scroll"
+            >
+              <Column selectionMode="multiple" headerStyle={{ width: "4rem" }}></Column>
+              <Column header="Action" body={actionBodyTemplate} headerStyle={{ minWidth: "10rem" }}></Column>
+              {/*TABLE_COLUMNS*/}
+            </DataTable>
 
-          <Dialog
-            visible={deleteEntityDialog}
-            style={{ width: "450px" }}
-            header="Confirm"
-            modal
-            footer={deleteEntityDialogFooter}
-            onHide={hideDeleteEntityDialog}
-          >
-            <div className="flex align-items-center justify-content-center">
-              <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: "2rem" }} />
-              {entity && <span>Are you sure you want to delete?</span>}
-            </div>
-          </Dialog>
+            <Dialog
+                visible={deleteEntityDialog}
+                style={{ width: "450px" }}
+                header="Confirm"
+                modal
+                footer={deleteEntityDialogFooter}
+                onHide={hideDeleteEntityDialog}
+            >
+              <div className="flex align-items-center justify-content-center">
+                <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: "2rem" }} />
+                {entity && <span>Are you sure you want to delete?</span>}
+              </div>
+            </Dialog>
 
-          <Dialog
-            visible={deleteEntitiesDialog}
-            style={{ width: "450px" }}
-            header="Confirm"
-            modal
-            footer={deleteEntitiesDialogFooter}
-            onHide={hideDeleteEntitiesDialog}
-          >
-            <div className="flex align-items-center justify-content-center">
-              <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: "2rem" }} />
-              {entity && <span>Are you sure you want to delete the selected xxxxx?</span>}
-            </div>
-          </Dialog>
+            <Dialog
+                visible={deleteEntitiesDialog}
+                style={{ width: "450px" }}
+                header="Confirm"
+                modal
+                footer={deleteEntitiesDialogFooter}
+                onHide={hideDeleteEntitiesDialog}
+            >
+              <div className="flex align-items-center justify-content-center">
+                <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: "2rem" }} />
+                {entity && <span>Are you sure you want to delete the selected xxxxx?</span>}
+              </div>
+            </Dialog>
+          </div>
         </div>
       </div>
-    </div>
   );
 };
 
 export default function XXXXXPage() {
   return (
-    <Layout>
-      <XXXXX />
-    </Layout>
+      <Layout>
+        <XXXXX />
+      </Layout>
   );
 }

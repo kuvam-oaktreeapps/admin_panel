@@ -4,7 +4,6 @@ import React, { useContext, useEffect, useRef } from "react";
 import AppFooter from "./AppFooter";
 import AppSidebar from "./AppSidebar";
 import AppTopbar from "./AppTopbar";
-import AppConfig from "./AppConfig";
 import { LayoutContext } from "./context/layoutcontext";
 import PrimeReact from "primereact/api";
 import { ChildContainerProps, LayoutState, AppTopbarRef } from "../types/types";
@@ -18,10 +17,10 @@ const Layout = ({ children }: ChildContainerProps) => {
     type: "click",
     listener: (event) => {
       const isOutsideClicked = !(
-        sidebarRef.current?.isSameNode(event.target as Node) ||
-        sidebarRef.current?.contains(event.target as Node) ||
-        topbarRef.current?.menubutton?.isSameNode(event.target as Node) ||
-        topbarRef.current?.menubutton?.contains(event.target as Node)
+          sidebarRef.current?.isSameNode(event.target as Node) ||
+          sidebarRef.current?.contains(event.target as Node) ||
+          topbarRef.current?.menubutton?.isSameNode(event.target as Node) ||
+          topbarRef.current?.menubutton?.contains(event.target as Node)
       );
 
       if (isOutsideClicked) {
@@ -34,10 +33,10 @@ const Layout = ({ children }: ChildContainerProps) => {
     type: "click",
     listener: (event) => {
       const isOutsideClicked = !(
-        topbarRef.current?.topbarmenu?.isSameNode(event.target as Node) ||
-        topbarRef.current?.topbarmenu?.contains(event.target as Node) ||
-        topbarRef.current?.topbarmenubutton?.isSameNode(event.target as Node) ||
-        topbarRef.current?.topbarmenubutton?.contains(event.target as Node)
+          topbarRef.current?.topbarmenu?.isSameNode(event.target as Node) ||
+          topbarRef.current?.topbarmenu?.contains(event.target as Node) ||
+          topbarRef.current?.topbarmenubutton?.isSameNode(event.target as Node) ||
+          topbarRef.current?.topbarmenubutton?.contains(event.target as Node)
       );
 
       if (isOutsideClicked) {
@@ -75,8 +74,8 @@ const Layout = ({ children }: ChildContainerProps) => {
       document.body.classList.remove("blocked-scroll");
     } else {
       document.body.className = document.body.className.replace(
-        new RegExp("(^|\\b)" + "blocked-scroll".split(" ").join("|") + "(\\b|$)", "gi"),
-        " "
+          new RegExp("(^|\\b)" + "blocked-scroll".split(" ").join("|") + "(\\b|$)", "gi"),
+          " "
       );
     }
   };
@@ -120,8 +119,8 @@ const Layout = ({ children }: ChildContainerProps) => {
   });
 
   return (
-    <React.Fragment>
-      {/* <Head>
+      <React.Fragment>
+        {/* <Head>
             <title>Sakai by PrimeReact | Free Admin Template for NextJS</title>
           <meta charSet="UTF-8" />
             <meta name="description" content="The ultimate collection of design-agnostic, flexible and accessible React UI Components." />
@@ -136,19 +135,18 @@ const Layout = ({ children }: ChildContainerProps) => {
             <link rel="icon" href={`/favicon.ico`} type="image/x-icon"></link>
         </Head> */}
 
-      <div className={containerClass}>
-        <AppTopbar ref={topbarRef} />
-        <div ref={sidebarRef} className="layout-sidebar">
-          <AppSidebar />
+        <div className={containerClass}>
+          <AppTopbar ref={topbarRef} />
+          <div ref={sidebarRef} className="layout-sidebar">
+            <AppSidebar />
+          </div>
+          <div className="layout-main-container">
+            <div className="layout-main">{children}</div>
+            <AppFooter />
+          </div>
+          <div className="layout-mask"></div>
         </div>
-        <div className="layout-main-container">
-          <div className="layout-main">{children}</div>
-          <AppFooter />
-        </div>
-        <AppConfig />
-        <div className="layout-mask"></div>
-      </div>
-    </React.Fragment>
+      </React.Fragment>
   );
 };
 

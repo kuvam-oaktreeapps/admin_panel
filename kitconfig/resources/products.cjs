@@ -6,10 +6,9 @@ const screen = {
   collectionName: "products",
   url: "/products",
   crudFields: [
-    { name: "pid", type: "String", unique: true },
-    { name: "name", type: "String" },
-    { name: "price", type: "Number", tableDisplay: false },
-    { name: "tagNo", type: "InputNumber", required: false },
+    { name: "pid", datatype: "String", unique: true },
+    { name: "name", datatype: "String" },
+    { name: "price", datatype: "Number", required: false },
   ],
 };
 

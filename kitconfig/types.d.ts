@@ -8,16 +8,8 @@ export type CrudField = {
     name: string;
     value: string;
   }[];
-  type:
-    | "InputText"
-    | "InputTextarea"
-    | "RadioButton"
-    | "Dropdown"
-    | "String"
-    | "InputSwitch"
-    | "Boolean"
-    | "InputNumber"
-    | "Number";
+  datatype?: "String" | "Number" | "Boolean";
+  widget?: "InputText" | "InputTextarea" | "RadioButton" | "Dropdown" | "InputSwitch" | "InputNumber";
 };
 
 export type Screen = {

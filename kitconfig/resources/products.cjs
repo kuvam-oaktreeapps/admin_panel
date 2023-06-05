@@ -1,7 +1,7 @@
 /**
- * @type {import('../types').Screen}
+ * @type {import('../types').Resource}
  */
-const screen = {
+const resource = {
   name: "products",
   collectionName: "products",
   url: "/products",
@@ -12,4 +12,4 @@ const screen = {
   ],
 };
 
-module.exports = screen;
+module.exports = resource;

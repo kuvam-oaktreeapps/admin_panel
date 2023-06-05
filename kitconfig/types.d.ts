@@ -12,7 +12,7 @@ export type CrudField = {
   widget?: "InputText" | "InputTextarea" | "RadioButton" | "Dropdown" | "InputSwitch" | "InputNumber";
 };
 
-export type Screen = {
+export type Resource = {
   name: string;
   url: string;
   collectionName: string;

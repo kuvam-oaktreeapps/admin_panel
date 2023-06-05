@@ -14,6 +14,8 @@ import { FileUpload } from "primereact/fileupload";
 import { fetcher } from "@/usefetcher";
 import { ServerResponse } from "@/types/types";
 import { Link } from "react-router-dom";
+import { BASE_URL } from "@/constants";
+import { getBase64Url } from "@/utils/images";
 
 function CreateXXXXX() {
   const initialState: XXXXXType = {

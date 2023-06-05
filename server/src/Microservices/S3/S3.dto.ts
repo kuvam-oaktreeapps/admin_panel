@@ -1,35 +1,12 @@
-import { Type } from "class-transformer";
-import {
-  ArrayMaxSize,
-  ArrayMinSize,
-  IsArray,
-  IsNotEmpty,
-  IsString,
-  ValidateNested,
-} from "class-validator";
-import "reflect-metadata";
+import { z } from "zod";
 
-interface S3FileUpload {
-  url: string;
-  fields: any;
-  fileUrl: string;
-}
+export const s3ImageUploadDto = z.object({
+  fileString: z.string().nonempty(),
+  folderName: z.string().nonempty(),
+});
 
-export class S3FileUploadItem {
-  @IsNotEmpty()
-  @IsString()
-  fileName!: string;
-}
+export const s3ImageUploadResponse = z.object({
+  url: z.string().nonempty(),
+});
 
-export class S3FileUploadDto {
-  @IsArray()
-  @ArrayMaxSize(20)
-  @ArrayMinSize(1)
-  @ValidateNested({ each: true })
-  @Type(() => S3FileUploadItem)
-  fileList!: S3FileUploadItem[];
-}
-
-export interface S3FileUploadResponse {
-  uploadList: S3FileUpload[];
-}
+export type S3ImageUploadDto = z.infer<typeof s3ImageUploadDto>;

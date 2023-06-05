@@ -6,12 +6,13 @@ const screen = {
   url: "/students",
   collectionName: "students",
   crudFields: [
-    { name: "fullName", widget: "InputText" },
-    { name: "bio", widget: "InputTextarea", required: false },
-    { name: "password", widget: "InputText", tableDisplay: false },
-    { name: "rollNo", widget: "InputNumber", inline: true, unique: true },
+    { name: "fullName", datatype: "String", widget: "InputText" },
+    { name: "bio", datatype: "String", widget: "InputTextarea", required: false },
+    { name: "password", datatype: "String", widget: "InputText", tableDisplay: false },
+    { name: "rollNo", datatype: "Number", widget: "InputNumber", inline: true, unique: true },
     {
       name: "city",
+      datatype: "String",
       widget: "Dropdown",
       inline: true,
       options: [
@@ -22,9 +23,10 @@ const screen = {
         { name: "Paris", value: "PRS" },
       ],
     },
-    { name: "isPublic", widget: "InputSwitch" },
+    { name: "isPublic", widget: "InputSwitch", datatype: "Boolean" },
     {
       name: "gender",
+      datatype: "String",
       widget: "RadioButton",
       options: [
         { name: "Male", value: "M" },

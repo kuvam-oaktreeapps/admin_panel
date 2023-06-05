@@ -27,8 +27,6 @@ function CreateXXXXX() {
   const [entity, setEntity] = useState(initialState);
   const [submitted, setSubmitted] = useState(false);
 
-  const [files, setFiles] = useState<Map<string, File>>(new Map());
-
   const { postData: postEntity } = fetcher.usePOST<ServerResponse<any>>("/xxxxx/create", {
     onSuccess: () => {
       toast.current?.show({
@@ -52,21 +50,6 @@ function CreateXXXXX() {
 
   const saveEntity = async () => {
     setSubmitted(true);
-
-    const file = Array.from(files)[0][1];
-    const base64Url = await getBase64Url(file);
-
-    const res = await fetch(`${BASE_URL}/s3/upload`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
-      },
-      body: JSON.stringify({
-        fileString: base64Url,
-        folderName: "images",
-      }),
-    });
 
     /*VALIDATE_FIELDS*/ await postEntity(entity);
   };
@@ -103,20 +86,7 @@ function CreateXXXXX() {
             </div>
 
             <div className="p-card-content">
-              <div className="flex flex-wrap align-items-end gap-3">
-                {/*INPUT_FIELDS*/}
-
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    const newFiles = new Map(files);
-                    newFiles.set("profile", e.target?.files?.[0] as File);
-
-                    setFiles(newFiles);
-                  }}
-                />
-              </div>
+              <div className="flex flex-wrap align-items-end gap-3">{/*INPUT_FIELDS*/}</div>
             </div>
 
             <div className="p-card-footer">

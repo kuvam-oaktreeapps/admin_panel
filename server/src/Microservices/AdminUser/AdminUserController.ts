@@ -1,14 +1,7 @@
 import { PasswordUtil } from "../../Security/PasswordUtil";
-import {
-  ADMIN_JWT_EXPIRY_IN_SECS,
-  AuthorizationRole,
-  HttpStatusCodes,
-} from "../../CommonConstants";
+import { ADMIN_JWT_EXPIRY_IN_SECS, AuthorizationRole, HttpStatusCodes } from "../../CommonConstants";
 import { ApiResponseI } from "../../CommonHttpServer/ResponseHandler";
-import {
-  AdminUserModel,
-  IAdminUserEntity,
-} from "../../Database/Entities/AdminUserEntity";
+import { AdminUserModel, IAdminUserEntity } from "../../Database/Entities/AdminUserEntity";
 import { AuthTokenI, JwtTokenTypes } from "../../Security/JwtConfig";
 import { JwtController } from "../../Security/JwtController";
 import { Logger } from "../../Utils/Logger";
@@ -26,11 +19,9 @@ export const AdminUserController = {
   async registerUser(input: AdminUserRegisterDto): Promise<ApiResponseI> {
     try {
       const { emailId, password, userName } = input;
-      console.log(input);
-      const existingUser: IAdminUserEntity | null =
-        await AdminUserModel().findOne({
-          emailId,
-        });
+      const existingUser: IAdminUserEntity | null = await AdminUserModel().findOne({
+        emailId,
+      });
 
       if (existingUser) {
         return {

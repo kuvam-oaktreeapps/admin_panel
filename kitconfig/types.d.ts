@@ -9,7 +9,14 @@ export type CrudField = {
     value: string;
   }[];
   datatype?: "String" | "Number" | "Boolean";
-  widget?: "InputText" | "InputTextarea" | "RadioButton" | "Dropdown" | "InputSwitch" | "InputNumber";
+  widget?:
+    | "InputText"
+    | "InputTextarea"
+    | "RadioButton"
+    | "Dropdown"
+    | "InputSwitch"
+    | "InputNumber"
+    | "ImageFileUpload";
 };
 
 export type Resource = {

@@ -6,6 +6,7 @@ const resource = {
   url: "/students",
   collectionName: "students",
   crudFields: [
+    { name: "profileImageUrl", datatype: "String", widget: "ImageFileUpload" },
     { name: "fullName", datatype: "String", widget: "InputText" },
     { name: "bio", datatype: "String", widget: "InputTextarea", required: false },
     { name: "password", datatype: "String", widget: "InputText", tableDisplay: false },

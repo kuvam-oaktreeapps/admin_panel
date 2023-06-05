@@ -4,6 +4,7 @@ import React, { useContext } from "react";
 import { CSSTransition } from "react-transition-group";
 import { MenuContext } from "./context/menucontext";
 import { AppMenuItemProps } from "../types/types";
+import { Link } from "react-router-dom";
 
 const AppMenuitem = (props: AppMenuItemProps) => {
   const { activeMenu, setActiveMenu } = useContext(MenuContext);
@@ -92,7 +93,7 @@ const AppMenuitem = (props: AppMenuItemProps) => {
 
       {item!.to && !item!.items && item!.visible !== false ? (
         <Link
-          href={item!.to}
+          to={item!.to}
           target={item!.target}
           onClick={(e) => itemClick(e)}
           className={classNames(item!.class, "p-ripple", { "active-route": isActiveRoute })}
